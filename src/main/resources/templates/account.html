@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Account')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <h1>Account</h1>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <h2>Change master password</h2>
+  <form th:action="@{/account/password}" method="post" class="card stack">
+    <label>Current master password
+      <input type="password" name="currentPassword" autocomplete="current-password" required>
+    </label>
+    <label>New master password
+      <input type="password" name="newPassword" autocomplete="new-password" required minlength="12" maxlength="128">
+    </label>
+    <label>Confirm new master password
+      <input type="password" name="confirm" autocomplete="new-password" required minlength="12" maxlength="128">
+    </label>
+    <button type="submit" class="btn-primary">Change password</button>
+  </form>
+  <p class="hint">Your entries aren't re-encrypted: only your data key is re-wrapped under the new password, so this is instant however many entries you have.</p>
+</main>
+</body>
+</html>

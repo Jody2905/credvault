@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${entry.title()})}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <a class="back" th:href="@{/vault}">← All entries</a>
+  <h1 th:text="${entry.title()}">title</h1>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div class="card">
+    <dl class="fields">
+      <dt>Website</dt>
+      <dd>
+        <a th:if="${entry.url() != null}" th:href="${entry.url()}" th:text="${entry.url()}"
+           target="_blank" rel="noopener noreferrer">url</a>
+        <span th:if="${entry.url() == null}" class="muted">—</span>
+      </dd>
+
+      <dt>Username</dt>
+      <dd class="secret-row">
+        <input type="text" id="login-username" th:value="${entry.username()}" readonly>
+        <button type="button" class="btn-quiet" data-copy="login-username">Copy</button>
+      </dd>
+
+      <dt>Password</dt>
+      <dd class="secret-row">
+        <input type="password" id="secret" th:value="${entry.password()}" readonly>
+        <button type="button" class="btn-quiet" data-toggle="secret">Show</button>
+        <button type="button" class="btn-quiet" data-copy="secret">Copy</button>
+      </dd>
+
+      <dt>Notes</dt>
+      <dd><pre class="notes" th:text="${entry.notes().isEmpty()} ? '—' : ${entry.notes()}">notes</pre></dd>
+
+      <dt>Last updated</dt>
+      <dd class="muted" th:text="${updated}">date</dd>
+    </dl>
+  </div>
+
+  <div class="actions">
+    <a class="btn" th:href="@{/vault/{id}/edit(id=${entry.id()})}">Edit</a>
+    <form th:action="@{/vault/{id}/delete(id=${entry.id()})}" method="post"
+          data-confirm="Delete this entry permanently?">
+      <button type="submit" class="btn-danger">Delete</button>
+    </form>
+  </div>
+  <p class="hint">Copied values are cleared from the clipboard after 30 seconds while this page is open.</p>
+</main>
+</body>
+</html>

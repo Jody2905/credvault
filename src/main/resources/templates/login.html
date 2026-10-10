@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Log in')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <h1>Unlock your vault</h1>
+  <div class="flash" th:if="${message}" th:text="${message}">message</div>
+  <div class="flash flash-error" th:if="${loginError}" th:text="${loginError}">error</div>
+
+  <form th:action="@{/login}" method="post" class="card stack">
+    <label>Username
+      <input type="text" name="username" autocomplete="username" required autofocus>
+    </label>
+    <label>Master password
+      <input type="password" name="password" autocomplete="current-password" required>
+    </label>
+    <button type="submit" class="btn-primary">Unlock</button>
+  </form>
+
+  <p class="muted">No account yet? <a th:href="@{/register}">Create one</a></p>
+</main>
+</body>
+</html>

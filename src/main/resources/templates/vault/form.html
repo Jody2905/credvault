@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Entry')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <a class="back" th:href="${entryId != null} ? @{/vault/{id}(id=${entryId})} : @{/vault}">← Back</a>
+  <h1 th:text="${entryId != null} ? 'Edit entry' : 'New entry'">Entry</h1>
+  <div class="flash flash-error" th:if="${error}" th:text="${error}">error</div>
+
+  <form th:action="${entryId != null} ? @{/vault/{id}(id=${entryId})} : @{/vault}"
+        method="post" class="card stack" autocomplete="off">
+    <label>Title
+      <input type="text" name="title" th:value="${form.title}" required maxlength="100" autofocus>
+    </label>
+    <label>Website
+      <input type="url" name="url" th:value="${form.url}" maxlength="255" placeholder="https://">
+    </label>
+    <label>Username or email
+      <input type="text" name="username" th:value="${form.username}" maxlength="200" autocomplete="off">
+    </label>
+    <label>Password
+      <span class="secret-row">
+        <input type="password" id="password" name="password" th:value="${form.password}"
+               required maxlength="500" autocomplete="new-password">
+        <button type="button" class="btn-quiet" data-toggle="password">Show</button>
+        <button type="button" class="btn-quiet" data-generate="password">Generate</button>
+      </span>
+    </label>
+    <label>Notes
+      <textarea name="notes" rows="4" maxlength="2000" th:text="${form.notes}"></textarea>
+    </label>
+    <p class="hint">Username, password and notes are encrypted before they're saved. Title and website are not, so the list can be shown without decrypting.</p>
+    <button type="submit" class="btn-primary">Save</button>
+  </form>
+</main>
+</body>
+</html>

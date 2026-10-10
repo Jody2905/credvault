@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Vault')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap">
+  <div class="page-head">
+    <h1>Your vault</h1>
+    <a class="btn btn-primary" th:href="@{/vault/new}">+ Add entry</a>
+  </div>
+  <div th:replace="~{fragments :: flash}"></div>
+
+  <div th:if="${entries.isEmpty()}" class="empty card">
+    <p>Your vault is empty.</p>
+    <p class="muted">Add your first login to store it encrypted with AES-256.</p>
+  </div>
+
+  <table th:unless="${entries.isEmpty()}" class="table">
+    <thead>
+      <tr><th>Title</th><th>Website</th><th>Last updated</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="e : ${entries}">
+        <td><a th:href="@{/vault/{id}(id=${e.id()})}" th:text="${e.title()}">title</a></td>
+        <td class="muted" th:text="${e.url() ?: '—'}">url</td>
+        <td class="muted" th:text="${e.updated()}">date</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

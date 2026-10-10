@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Activity')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap">
+  <h1>Activity</h1>
+  <p class="muted">Everything that has happened on your account, newest first. Failed attempts are highlighted.</p>
+
+  <table class="table">
+    <thead>
+      <tr><th>Time</th><th>Event</th><th>Result</th><th>Detail</th></tr>
+    </thead>
+    <tbody>
+      <tr th:each="e : ${events}" th:classappend="${e.success()} ? '' : 'row-fail'">
+        <td class="mono" th:text="${e.time()}">time</td>
+        <td class="mono" th:text="${e.action()}">action</td>
+        <td th:text="${e.success()} ? 'OK' : 'Failed'">result</td>
+        <td class="muted" th:text="${e.detail()}">detail</td>
+      </tr>
+    </tbody>
+  </table>
+</main>
+</body>
+</html>

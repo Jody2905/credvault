@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Create account')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <h1>Create your vault</h1>
+  <div class="flash flash-error" th:if="${error}" th:text="${error}">error</div>
+
+  <form th:action="@{/register}" method="post" class="card stack">
+    <label>Username
+      <input type="text" name="username" th:value="${username}" autocomplete="username"
+             required minlength="3" maxlength="50" autofocus>
+      <span class="hint">3 to 50 characters: letters, numbers, dots, dashes or underscores.</span>
+    </label>
+    <label>Master password
+      <input type="password" name="password" autocomplete="new-password" required minlength="12" maxlength="128">
+      <span class="hint">At least 12 characters. A few random words is strong and easy to remember.</span>
+    </label>
+    <label>Confirm master password
+      <input type="password" name="confirm" autocomplete="new-password" required minlength="12" maxlength="128">
+    </label>
+    <button type="submit" class="btn-primary">Create vault</button>
+  </form>
+
+  <div class="warning">
+    <strong>There is no password reset.</strong> Your master password is never stored, and it's
+    the only thing that can decrypt your vault. If you forget it, nobody, not even an
+    administrator, can recover your entries.
+  </div>
+
+  <p class="muted">Already have an account? <a th:href="@{/login}">Log in</a></p>
+</main>
+</body>
+</html>

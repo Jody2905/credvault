@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:fragment="head(title)">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${title} + ' · CredVault'">CredVault</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <script th:src="@{/js/app.js}" defer></script>
+</head>
+
+<body>
+
+<header th:fragment="topbar" class="topbar">
+  <a class="brand" th:href="@{/vault}"><span class="brand-mark">◆</span> CredVault</a>
+  <nav class="nav" th:if="${currentUser != null}">
+    <a th:href="@{/vault}">Vault</a>
+    <a th:href="@{/activity}">Activity</a>
+    <a th:href="@{/account}">Account</a>
+    <span class="who" th:text="${currentUser}">user</span>
+    <form th:action="@{/logout}" method="post" class="inline">
+      <button type="submit" class="btn-quiet">Lock &amp; log out</button>
+    </form>
+  </nav>
+</header>
+
+<div th:fragment="flash">
+  <div class="flash" th:if="${message}" th:text="${message}">message</div>
+  <div class="flash flash-error" th:if="${error}" th:text="${error}">error</div>
+</div>
+
+</body>
+</html>

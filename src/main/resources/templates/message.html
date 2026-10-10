@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head(${title})}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<main class="wrap narrow">
+  <h1 th:text="${title}">Title</h1>
+  <p th:text="${text}">Text</p>
+  <p><a th:href="@{/vault}">← Back to your vault</a></p>
+</main>
+</body>
+</html>

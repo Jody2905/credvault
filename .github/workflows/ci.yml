@@ -1,0 +1,60 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  # All 55 unit, integration and end-to-end security tests
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - run: chmod +x mvnw && ./mvnw -B test
+
+  # Starts the real app against a real PostgreSQL database and checks it serves pages
+  postgres-smoke-test:
+    runs-on: ubuntu-latest
+    needs: test
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: credvault
+          POSTGRES_USER: credvault
+          POSTGRES_PASSWORD: ci-only-password
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U credvault"
+          --health-interval 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - run: chmod +x mvnw && ./mvnw -B -DskipTests package
+      - name: Start app with the postgres profile
+        env:
+          SPRING_PROFILES_ACTIVE: postgres
+          DB_PASSWORD: ci-only-password
+        run: |
+          java -jar target/*.jar > app.log 2>&1 &
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8080/login > /dev/null; then
+              echo "App is up on PostgreSQL"
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "App did not start:"
+          cat app.log
+          exit 1

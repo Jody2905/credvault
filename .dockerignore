@@ -1,0 +1,8 @@
+target/
+data/
+.git/
+.github/
+.vscode/
+.env
+docs/
+HELP.md

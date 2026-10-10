@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments :: head('Error')}"></head>
+<body>
+<header th:replace="~{fragments :: topbar}"></header>
+
+<!-- Shows only the status code and its standard name: never stack traces or internal messages -->
+<main class="wrap narrow">
+  <h1 th:text="${status} + ' ' + ${error}">Error</h1>
+  <p class="muted">Something went wrong with that request.</p>
+  <p><a th:href="@{/vault}">← Back to your vault</a></p>
+</main>
+</body>
+</html>
